@@ -1,0 +1,111 @@
+//Merge Sort (decreasing order)
+#include<stdio.h>
+void merge_sort(int *ptr,int sz)
+{
+int stack_1[10][2];
+int stack_2[10][2];
+int stack_size1;
+int stack_size2;
+int top1,top2;
+int lb,lb1,lb2;
+int ub,ub1,ub2;
+int e,f,g,j;
+int temp[10];
+int mid;
+
+stack_size1=sz;
+stack_size2=sz;
+top1=stack_size1;
+top2=stack_size2;
+
+lb=0;
+ub=sz-1;
+
+--top1;
+stack_1[top1][0]=lb;
+stack_1[top1][1]=ub;
+
+while(top1!=stack_size1)
+{
+lb1=stack_1[top1][0];
+ub1=stack_1[top1][1];
+++top1;
+
+--top2;
+stack_2[top2][0]=lb1;
+stack_2[top2][1]=ub1;
+
+mid=(lb1+ub1)/2;
+if(lb1 < mid)
+{
+top1--;
+stack_1[top1][0]=lb1;
+stack_1[top1][1]=mid;
+}
+
+if(mid+1 < ub1)
+{
+--top1;
+stack_1[top1][0]=mid+1;
+stack_1[top1][1]=ub1;
+}
+}
+while(top2!=stack_size2)
+{
+lb2=stack_2[top2][0];
+ub2=stack_2[top2][1];
+++top2;
+
+mid=(lb2+ub2)/2;
+
+lb1=lb2;
+ub1=mid;
+lb2=mid+1;
+ub2=ub2;
+g=*ptr;
+for(g=lb1,e=lb1,f=lb2;e<=ub1&&f<=ub2;++g)
+{
+if(*(ptr+e) > *(ptr+f))
+{
+temp[g]= *(ptr+e);
+++e;
+}
+else 
+{
+temp[g]= *(ptr+f);
+++f;
+}
+}
+
+for(;e<=ub1;++e,++g)
+{
+temp[g]= *(ptr+e);
+}
+for(;f<=ub2;++f,++g)
+{
+temp[g]= *(ptr+f);
+}
+
+for(j=lb1;j<=ub2;++j)
+{
+*(ptr+j)=temp[j];
+}
+}
+}
+int main()
+{
+int x[10];
+int i;
+
+for(i=0;i<=9;++i)
+{
+printf("Enter a number: ");
+scanf("%d",&x[i]);
+}
+
+merge_sort(x,10);
+
+for(i=0;i<=9;++i)printf("%d\n",x[i]);
+
+return 0;
+}
